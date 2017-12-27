@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.lz.mapper.BookMapper">
+	<resultMap type="team.lz.bean.Book" id="BaseResultMap">
+		<id column="id" property="id"/>
+		<result column="bookName" property="bookName"/>
+		<result column="bookSummary" property="bookSummary"/>
+		<result column="fixPrice" property="fixPrice"/>
+		<result column="currentPrice" property="currentPrice"/>
+		<result column="bookPic" property="bookPic"/>
+		<result column="authorName" property="authorName"/>
+		<result column="authorSummary" property="authorSummary"/>
+		<result column="publishDate" property="publishDate"/>
+		<result column="publishing" property="publishing"/>
+		<result column="catalogue" property="catalogue"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,bookName,bookSummary,fixPrice,currentPrice,bookPic,authorName,authorSummary,publishDate,publishing,catalogue
+	</sql>
+	<select id="selectByAccountAndPwd" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_book
+		where account=#{0} and pwd=#{1}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_book
+	</select>
+	<insert id="insert" parameterType="team.lz.bean.Book">
+		insert into lz_book(id,bookname,booksummary,fixprice,currentprice,bookpic,authorname,authorsummary,publishdate,publishing,catalogue) values(#{id},#{bookName},#{bookSummary},#{fixPrice},#{currentPrice},#{bookPic},#{authorName},#{authorSummary},#{publishDate},#{publishing},#{catalogue})
+	</insert>
+	<update id="update" parameterType="team.lz.bean.Book">
+		update lz_book set bookname=#{bookName},booksummary=#{bookSummary},fixprice=#{fixPrice},currentprice=#{currentPrice},bookpic=#{bookPic},authorname=#{authorName},authorsummary=#{authorSummary},publishdate=#{publishDate},publishing=#{publishing},catalogue=#{catalogue} where id=#{id}
+	</update>
+	<delete id="deleteById" parameterType="Integer">
+		delete from lz_book where id=#{id}
+	</delete>
+	
+	<!-- 	通过id查找 -->
+	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_book
+		where id=#{id}
+	</select>
+	<select id="selectByFuzzy" parameterType="String" resultMap="BaseResultMap">
+	 SELECT * 
+	 FROM lz_book
+	 WHERE bookName LIKE '%#{str}%'
+	 OR bookSummary LIKE '%#{str}%'
+	 OR authorName LIKE '%#{str}%'
+	 OR publishing LIKE '%#{str}%'
+	 OR authorSummary LIKE '%#{str}%'
+	 OR catelogue LIKE '%#{str}%'
+	</select>
+</mapper>

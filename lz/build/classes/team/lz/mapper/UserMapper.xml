@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.lz.mapper.UserMapper">
+	<resultMap type="team.lz.bean.User" id="BaseResultMap">
+		<id column="id" property="id"/>
+		<result column="account" property="account"/>
+		<result column="pwd" property="pwd"/>
+		<result column="nickName" property="nickName"/>
+		<result column="phoneNumber" property="phoneNumber"/>
+		<result column="email" property="email"/>
+		<result column="address" property="address"/>
+		<result column="profileUrl" property="profileUrl"/>
+		<result column="grade" property="grade"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,account,pwd,nickName,phoneNumber,email,address,profileUrl,grade
+	</sql>
+	<select id="selectByAccountAndPwd" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_user
+		where account=#{0} and pwd=#{1}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_user
+	</select>
+	<insert id="insert" parameterType="team.lz.bean.User">
+		insert into 
+		lz_user(id,account,pwd,nickname,email,phonenumber,address,profileUrl,grade) values(#{id},#{account},#{pwd},#{nickName},#{email},#{phoneNumber},#{address},#{profileUrl},#{grade}) 
+	</insert>
+	<update id="update" parameterType="team.lz.bean.User">
+		update lz_user set account=#{account},pwd=#{pwd},nickname=#{nickName},email=#{email},phonenumber=#{phoneNumber},address=#{address},profileurl=#{profileUrl},grade=#{grade} where id=#{id}
+	</update>
+	<delete id="deleteById" parameterType="Integer">
+		delete from lz_user where id=#{id}
+	</delete>
+	
+	<!-- 	通过id查找 -->
+	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include> 
+		from lz_user
+		where id=#{id}
+	</select>
+</mapper>

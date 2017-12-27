@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.lz.mapper.CartMapper">
+	<resultMap type="team.lz.bean.Cart" id="BaseResultMap">
+		<id column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="bookId" property="bookId"/>
+		<result column="bookNum" property="bookNum"/>
+		
+		<!-- 图书信息 -->
+		<result column="bookName" property="bookName"/>
+		<result column="bookSummary" property="bookSummary"/>
+		<result column="fixPrice" property="fixPrice"/>
+		<result column="currentPrice" property="currentPrice"/>
+		<result column="bookPic" property="bookPic"/>
+		<result column="authorName" property="authorName"/>
+		<result column="authorSummary" property="authorSummary"/>
+		<result column="publishDate" property="publishDate"/>
+		<result column="publishing" property="publishing"/>
+		<result column="catalogue" property="catalogue"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,userId,bookId,bookNum
+	</sql>
+	
+	<!--全部查询 -->
+	<select id="selectAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM lz_item
+	</select>
+	
+	<!--添加到购物车 -->
+	<insert id="insert" parameterType="team.lz.bean.Cart">
+		insert into lz_item(id,userId,bookid,booknum) values(#{id},#{userId},#{bookId},#{bookNum}) 
+	</insert>
+	<!-- 改变购物车中的商品数量 -->
+	<update id="update" parameterType="team.lz.bean.Cart">
+		update lz_item set booknum=#{bookNum} where bookid=#{bookId}
+	</update>
+	<!--从购物车移除 -->
+	<delete id="deleteById" parameterType="Integer">
+		delete from lz_item where bookid=#{bookId}
+	</delete>
+	
+	<!--通过用户id查找 -->
+	<select id="selectByUserId" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		bookNum,bookName,bookSummary,fixPrice,currentPrice,bookPic,authorName,authorSummary,publishDate,publishing,catalogue
+		from lz_item,lz_book
+		where userid=#{userId} and lz_book.id=lz_item.bookid
+	</select>
+</mapper>
